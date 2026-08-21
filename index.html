@@ -1,0 +1,4946 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Docs To Go! - Food Ordering</title>
+
+<!-- GOOGLE FONT -->
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet">
+
+<!-- FONT AWESOME -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+<style>
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+
+    font-family:
+        system-ui,
+        'Segoe UI',
+        Roboto,
+        sans-serif;
+
+    min-height: 100vh;
+
+    color: #35150D;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FFF3E0 0%,
+            #FFD6A0 45%,
+            #F47B20 100%
+        );
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+
+        radial-gradient(
+            circle at 85% 10%,
+            rgba(255,255,255,.45),
+            transparent 20%
+        ),
+
+        radial-gradient(
+            circle at 15% 90%,
+            rgba(255,255,255,.35),
+            transparent 20%
+        );
+
+    pointer-events: none;
+
+    z-index: -1;
+}
+
+
+/* =========================================================
+   LEFT SIDEBAR
+========================================================= */
+
+.container {
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: 280px;
+
+    height: 100vh;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,248,237,.97),
+            rgba(255,225,190,.94)
+        );
+
+    backdrop-filter: blur(15px);
+
+    -webkit-backdrop-filter: blur(15px);
+
+    padding: 20px;
+
+    border-right:
+        4px solid #F47B20;
+
+    box-shadow:
+        5px 0 25px
+        rgba(90,25,5,.18);
+
+    z-index: 1000;
+
+    overflow-y: auto;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logoName {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.logoName img {
+
+    width: 220px;
+
+    height: auto;
+
+    max-width: 100%;
+
+    object-fit: contain;
+
+    transition: .25s ease;
+}
+
+.logoName img:hover {
+
+    transform:
+        scale(1.04);
+}
+
+
+/* =========================================================
+   HAMBURGER
+========================================================= */
+
+#menu-toggle {
+    display: none;
+}
+
+
+.hamburger-btn {
+
+    background:
+        linear-gradient(
+            135deg,
+            #7A120C,
+            #F47B20
+        );
+
+    border:
+        3px solid #FFC107;
+
+    border-radius: 60px;
+
+    width: 56px;
+
+    height: 56px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    cursor: pointer;
+
+    margin:
+        10px auto 25px;
+
+    box-shadow:
+        0 6px 14px
+        rgba(90,20,5,.25);
+
+    transition: .25s ease;
+}
+
+.hamburger-btn:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #F47B20,
+            #FFC107
+        );
+
+    transform:
+        scale(1.06);
+}
+
+.hamburger-btn:active {
+
+    transform:
+        scale(.94);
+}
+
+.hamburger-btn span {
+
+    display: block;
+
+    width: 28px;
+
+    height: 3px;
+
+    background: #FFF3E0;
+
+    border-radius: 12px;
+
+    transition: .25s ease;
+}
+
+.hamburger-btn span:nth-child(1) {
+
+    width: 22px;
+
+    align-self: flex-start;
+
+    margin-left: 8px;
+}
+
+.hamburger-btn span:nth-child(3) {
+
+    width: 18px;
+
+    align-self: flex-end;
+
+    margin-right: 8px;
+}
+
+
+/* HAMBURGER OPEN */
+
+.hamburger-btn.open span:nth-child(1) {
+    width: 28px;
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-btn.open span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.hamburger-btn.open span:nth-child(3) {
+    width: 28px;
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+
+/* =========================================================
+   HAMBURGER MENU
+========================================================= */
+
+.menu-content {
+
+    max-height: 0;
+
+    opacity: 0;
+
+    overflow: hidden;
+
+    transition:
+        max-height .5s ease,
+        opacity .4s ease;
+
+    pointer-events: none;
+}
+
+#menu-toggle:checked ~ .menu-content {
+
+    max-height: 700px;
+
+    opacity: 1;
+
+    pointer-events: auto;
+}
+
+
+.menu-list {
+
+    list-style: none;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.menu-list li {
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            90deg,
+            #FFF3E0,
+            #FFE0B2
+        );
+
+    border-radius: 18px;
+
+    padding:
+        14px 16px;
+
+    font-weight: 600;
+
+    font-size: 15px;
+
+    color: #35150D;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    border:
+        2px solid transparent;
+
+    box-shadow:
+        0 4px 10px
+        rgba(80,25,5,.08);
+
+    transition: .2s;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+.menu-list li:hover {
+
+    background:
+        linear-gradient(
+            90deg,
+            #7A120C,
+            #F47B20
+        );
+
+    color: white;
+
+    border-color:
+        #FFC107;
+
+    transform:
+        translateX(6px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(90,25,5,.22);
+}
+
+.menu-list li:active {
+
+    transform:
+        scale(.97);
+}
+
+.menu-list li i {
+
+    width: 25px;
+
+    font-size: 17px;
+
+    color: #F47B20;
+
+    text-align: center;
+}
+
+.menu-list li:hover i {
+
+    color: #FFC107;
+}
+
+.menu-list li span:first-of-type {
+
+    flex: 1;
+}
+
+.menu-icon {
+
+    margin-left: auto;
+
+    background:
+        #FFC107;
+
+    color:
+        #7A120C;
+
+    padding:
+        4px 9px;
+
+    border-radius:
+        20px;
+
+    font-size:
+        11px;
+
+    font-weight:
+        bold;
+
+    white-space:
+        nowrap;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main-content {
+
+    margin-left: 280px;
+
+    padding: 35px;
+
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   MENU MESSAGE
+========================================================= */
+
+#menu-message {
+
+    margin-bottom: 20px;
+
+    background:
+        rgba(255,255,255,.94);
+
+    border-left:
+        5px solid #F47B20;
+
+    border-radius:
+        15px;
+
+    padding:
+        14px 18px;
+
+    box-shadow:
+        0 8px 20px
+        rgba(80,40,20,.10);
+
+    opacity: 0;
+
+    transform:
+        translateY(-10px);
+
+    transition:
+        .3s ease;
+}
+
+#menu-message.show {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+.menu-message-content {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.menu-message-content strong {
+
+    color:
+        #C6280E;
+
+    font-size:
+        16px;
+}
+
+.menu-message-content p {
+
+    color:
+        #80675A;
+
+    font-size:
+        12px;
+
+    margin-top:
+        3px;
+}
+
+.menu-message-content button {
+
+    border: none;
+
+    background:
+        #FFE0B2;
+
+    color:
+        #7A120C;
+
+    width:
+        30px;
+
+    height:
+        30px;
+
+    border-radius:
+        50%;
+
+    cursor:
+        pointer;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.top-bar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom:
+        25px;
+}
+
+.welcome h1 {
+
+    font-size:
+        28px;
+
+    margin-bottom:
+        4px;
+
+    color:
+        #7A120C;
+}
+
+.welcome p {
+
+    color:
+        #7C6255;
+
+    font-size:
+        14px;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-box {
+
+    width:
+        300px;
+
+    background:
+        rgba(255,255,255,.90);
+
+    border-radius:
+        30px;
+
+    padding:
+        12px 18px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    border:
+        2px solid #FFD6A0;
+
+    box-shadow:
+        0 5px 15px
+        rgba(0,0,0,.06);
+}
+
+.search-box:focus-within {
+
+    border-color:
+        #F47B20;
+}
+
+.search-box i {
+
+    color:
+        #F47B20;
+}
+
+.search-box input {
+
+    width:
+        100%;
+
+    border:
+        none;
+
+    outline:
+        none;
+
+    background:
+        transparent;
+
+    font-size:
+        14px;
+
+    color:
+        #35150D;
+}
+
+
+/* =========================================================
+   SHOP LAYOUT
+========================================================= */
+
+.shop-layout {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        350px;
+
+    gap:
+        25px;
+
+    align-items:
+        start;
+}
+
+
+/* =========================================================
+   PROMO
+========================================================= */
+
+.promo {
+
+    height:
+        200px;
+
+    border-radius:
+        25px;
+
+    background:
+        linear-gradient(
+            120deg,
+            #7A120C 0%,
+            #B52A12 45%,
+            #F47B20 100%
+        );
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    padding:
+        35px;
+
+    color:
+        #FFF3E0;
+
+    margin-bottom:
+        25px;
+
+    box-shadow:
+        0 12px 25px
+        rgba(122,18,12,.30);
+
+    border:
+        2px solid #FFC107;
+}
+
+.promo h2 {
+
+    font-size:
+        31px;
+
+    max-width:
+        300px;
+
+    margin-bottom:
+        8px;
+
+    color:
+        #FFC107;
+}
+
+.promo p {
+
+    font-size:
+        14px;
+
+    color:
+        #FFF3E0;
+
+    opacity:
+        .95;
+}
+
+.promo-circle {
+
+    position:
+        absolute;
+
+    width:
+        230px;
+
+    height:
+        230px;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,.12);
+
+    right:
+        50px;
+
+    top:
+        -60px;
+}
+
+.promo img {
+
+    position:
+        absolute;
+
+    right:
+        20px;
+
+    bottom:
+        8px;
+
+    width:
+        260px;
+
+    height:
+        180px;
+
+    object-fit:
+        contain;
+
+    z-index:
+        2;
+
+    border-radius: 10%;
+}
+
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.categories {
+
+    display:
+        flex;
+
+    gap:
+        10px;
+
+    overflow-x:
+        auto;
+
+    padding-bottom:
+        10px;
+
+    margin-bottom:
+        25px;
+}
+
+.category {
+
+    border:
+        2px solid #F47B20;
+
+    background:
+        #FFF3E0;
+
+    padding:
+        11px 18px;
+
+    border-radius:
+        30px;
+
+    white-space:
+        nowrap;
+
+    cursor:
+        pointer;
+
+    color:
+        #7A120C;
+
+    font-weight:
+        600;
+
+    transition:
+        .2s;
+}
+
+.category:hover,
+.category.active {
+
+    background:
+        linear-gradient(
+            90deg,
+            #7A120C,
+            #F47B20
+        );
+
+    color:
+        white;
+
+    border-color:
+        #FFC107;
+
+    box-shadow:
+        0 6px 15px
+        rgba(122,18,12,.25);
+}
+
+
+/* =========================================================
+   FOOD SECTION
+========================================================= */
+
+.food-section {
+
+    scroll-margin-top:
+        25px;
+
+    margin-bottom:
+        25px;
+}
+
+.section-title {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    margin-bottom:
+        15px;
+}
+
+.section-title h2 {
+
+    font-size:
+        21px;
+
+    color:
+        #7A120C;
+}
+
+
+/* =========================================================
+   FOOD GRID
+========================================================= */
+
+.food-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap:
+        18px;
+
+    margin-bottom:
+        30px;
+}
+
+
+/* =========================================================
+   FOOD CARD
+========================================================= */
+
+.food-card {
+
+    background:
+        rgba(255,250,242,.96);
+
+    border-radius:
+        20px;
+
+    overflow:
+        hidden;
+
+    border:
+        1px solid #FFD6A0;
+
+    box-shadow:
+        0 7px 18px
+        rgba(80,25,5,.10);
+
+    transition:
+        .25s;
+
+    position:
+        relative;
+}
+
+.food-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    border-color:
+        #F47B20;
+
+    box-shadow:
+        0 14px 25px
+        rgba(122,18,12,.18);
+}
+
+
+/* =========================================================
+   FOOD IMAGE
+========================================================= */
+
+.food-image {
+
+    width:
+        100%;
+
+    height:
+        145px;
+
+    object-fit:
+        cover;
+
+    display:
+        block;
+
+    background:
+        #FFE0B2;
+}
+
+
+/* =========================================================
+   FOOD INFORMATION
+========================================================= */
+
+.food-info {
+
+    padding:
+        14px;
+}
+
+.food-info h3 {
+
+    font-size:
+        15px;
+
+    margin-bottom:
+        5px;
+
+    color:
+        #35150D;
+}
+
+.food-info p {
+
+    font-size:
+        12px;
+
+    color:
+        #8B7164;
+
+    margin-bottom:
+        12px;
+}
+
+.food-bottom {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+}
+
+.price {
+
+    font-size:
+        17px;
+
+    font-weight:
+        800;
+
+    color:
+        #C6280E;
+}
+
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.add-food {
+
+    width:
+        36px;
+
+    height:
+        36px;
+
+    border:
+        none;
+
+    border-radius:
+        50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7A120C,
+            #F47B20
+        );
+
+    color:
+        white;
+
+    cursor:
+        pointer;
+
+    font-size:
+        16px;
+
+    transition:
+        .2s;
+
+    box-shadow:
+        0 4px 10px
+        rgba(122,18,12,.25);
+}
+
+.add-food:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #F47B20,
+            #FFC107
+        );
+
+    color:
+        #7A120C;
+
+    transform:
+        scale(1.1);
+}
+
+
+/* =========================================================
+   CHECK FOOD
+========================================================= */
+
+.check-food {
+
+    position:
+        absolute;
+
+    top:
+        10px;
+
+    right:
+        10px;
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    border-radius:
+        50%;
+
+    border:
+        2px solid white;
+
+    background:
+        rgba(53,21,13,.65);
+
+    color:
+        white;
+
+    cursor:
+        pointer;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    transition:
+        .2s;
+
+    z-index:
+        5;
+}
+
+.check-food:hover {
+
+    background:
+        #F47B20;
+}
+
+.check-food.checked {
+
+    background:
+        linear-gradient(
+            135deg,
+            #7A120C,
+            #F47B20
+        );
+
+    border-color:
+        #FFC107;
+}
+
+.check-food i {
+
+    display:
+        none;
+}
+
+.check-food.checked i {
+
+    display:
+        block;
+}
+
+
+/* =========================================================
+   ORDER PANEL
+========================================================= */
+
+.order-panel {
+
+    position:
+        sticky;
+
+    top:
+        25px;
+
+    height:
+        calc(100vh - 50px);
+
+    max-height:
+        calc(100vh - 50px);
+
+    background:
+        rgba(255,248,237,.97);
+
+    border-radius:
+        25px;
+
+    padding:
+        22px;
+
+    border:
+        2px solid #F47B20;
+
+    box-shadow:
+        0 10px 30px
+        rgba(60,20,5,.15);
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    overflow:
+        hidden;
+}
+
+
+/* =========================================================
+   ORDER HEADER
+========================================================= */
+
+.order-header {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding-bottom:
+        15px;
+
+    border-bottom:
+        2px solid #FFD6A0;
+
+    flex-shrink:
+        0;
+}
+
+.order-header h2 {
+
+    font-size:
+        20px;
+
+    color:
+        #7A120C;
+}
+
+.order-header span {
+
+    font-size:
+        12px;
+
+    background:
+        #FFC107;
+
+    color:
+        #7A120C;
+
+    padding:
+        6px 10px;
+
+    border-radius:
+        20px;
+
+    font-weight:
+        bold;
+}
+
+
+/* =========================================================
+   SCROLLABLE ORDER CONTENT
+========================================================= */
+
+.order-scroll {
+
+    flex:
+        1;
+
+    overflow-y:
+        auto;
+
+    overflow-x:
+        hidden;
+
+    padding-right:
+        5px;
+
+    min-height:
+        0;
+}
+
+
+/* SCROLLBAR */
+
+.order-scroll::-webkit-scrollbar {
+
+    width:
+        7px;
+}
+
+.order-scroll::-webkit-scrollbar-track {
+
+    background:
+        #FFE0B2;
+
+    border-radius:
+        10px;
+}
+
+.order-scroll::-webkit-scrollbar-thumb {
+
+    background:
+        #F47B20;
+
+    border-radius:
+        10px;
+}
+
+.order-scroll::-webkit-scrollbar-thumb:hover {
+
+    background:
+        #7A120C;
+}
+
+
+/* =========================================================
+   ORDER ITEMS
+========================================================= */
+
+.order-items {
+
+    padding:
+        10px 0;
+}
+
+.empty-order {
+
+    text-align:
+        center;
+
+    color:
+        #9B8174;
+
+    font-size:
+        13px;
+
+    padding:
+        35px 10px;
+}
+
+.order-item {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    padding:
+        12px 0;
+
+    border-bottom:
+        1px solid #F4E5DD;
+}
+
+.order-item img {
+
+    width:
+        55px;
+
+    height:
+        55px;
+
+    border-radius:
+        12px;
+
+    object-fit:
+        cover;
+
+    background:
+        #FFE0B2;
+}
+
+.order-details {
+
+    flex:
+        1;
+}
+
+.order-details h4 {
+
+    font-size:
+        13px;
+
+    margin-bottom:
+        4px;
+}
+
+.order-details span {
+
+    font-size:
+        12px;
+
+    color:
+        #C6280E;
+
+    font-weight:
+        bold;
+}
+
+
+/* =========================================================
+   QUANTITY
+========================================================= */
+
+.quantity {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+}
+
+.quantity button {
+
+    width:
+        23px;
+
+    height:
+        23px;
+
+    border:
+        none;
+
+    border-radius:
+        50%;
+
+    background:
+        #FFE0B2;
+
+    color:
+        #7A120C;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        bold;
+}
+
+.quantity button:hover {
+
+    background:
+        #F47B20;
+
+    color:
+        white;
+}
+
+.quantity strong {
+
+    font-size:
+        12px;
+}
+
+
+/* =========================================================
+   CUSTOMER INFORMATION
+========================================================= */
+
+.customer-section {
+
+    margin-top:
+        15px;
+
+    padding:
+        15px;
+
+    background:
+        #FFF3E0;
+
+    border:
+        1px solid #FFD6A0;
+
+    border-radius:
+        16px;
+}
+
+.customer-section h3 {
+
+    color:
+        #7A120C;
+
+    font-size:
+        16px;
+
+    margin-bottom:
+        12px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+}
+
+.customer-field {
+
+    margin-bottom:
+        10px;
+}
+
+.customer-field label {
+
+    display:
+        block;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    color:
+        #7A120C;
+
+    margin-bottom:
+        5px;
+}
+
+.customer-field input,
+.customer-field textarea {
+
+    width:
+        100%;
+
+    border:
+        1px solid #E8B98E;
+
+    background:
+        white;
+
+    border-radius:
+        9px;
+
+    padding:
+        10px;
+
+    outline:
+        none;
+
+    font-family:
+        inherit;
+
+    font-size:
+        12px;
+
+    color:
+        #35150D;
+
+    transition:
+        .2s;
+}
+
+.customer-field input:focus,
+.customer-field textarea:focus {
+
+    border-color:
+        #F47B20;
+
+    box-shadow:
+        0 0 0 2px
+        rgba(244,123,32,.12);
+}
+
+.customer-field textarea {
+
+    resize:
+        vertical;
+
+    min-height:
+        65px;
+}
+
+
+/* =========================================================
+   PHONE + OTP
+========================================================= */
+
+.verification-box {
+
+    margin-top:
+        5px;
+
+    padding:
+        10px;
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(255,224,178,.55);
+
+    border:
+        1px solid #FFD6A0;
+}
+
+.verification-title {
+
+    font-size:
+        12px;
+
+    font-weight:
+        bold;
+
+    color:
+        #7A120C;
+
+    margin-bottom:
+        8px;
+}
+
+.otp-row {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 85px;
+
+    gap:
+        7px;
+}
+
+.otp-row input {
+
+    width:
+        100%;
+
+    border:
+        1px solid #E8B98E;
+
+    border-radius:
+        8px;
+
+    padding:
+        9px;
+
+    outline:
+        none;
+
+    font-size:
+        12px;
+}
+
+.otp-row input:focus {
+
+    border-color:
+        #F47B20;
+}
+
+.verify-status {
+
+    font-size:
+        11px;
+
+    margin-top:
+        6px;
+
+    color:
+        #9B8174;
+}
+
+.verify-status.valid {
+
+    color:
+        #2E7D32;
+
+    font-weight:
+        bold;
+}
+
+
+/* =========================================================
+   ORDER SUMMARY
+========================================================= */
+
+.order-summary {
+
+    border-top:
+        2px solid #FFD6A0;
+
+    padding-top:
+        15px;
+
+    flex-shrink:
+        0;
+
+    background:
+        rgba(255,248,237,.97);
+}
+
+.summary-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    margin-bottom:
+        9px;
+
+    font-size:
+        13px;
+}
+
+.summary-row strong {
+
+    color:
+        #7A120C;
+}
+
+.summary-row.total {
+
+    font-size:
+        19px;
+
+    font-weight:
+        800;
+
+    padding-top:
+        8px;
+}
+
+.summary-row.total strong {
+
+    color:
+        #C6280E;
+}
+
+
+/* =========================================================
+   CONFIRM ORDER BUTTON
+========================================================= */
+
+.checkout-btn {
+
+    width:
+        100%;
+
+    border:
+        2px solid #FFC107;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7A120C,
+            #F47B20
+        );
+
+    color:
+        white;
+
+    padding:
+        14px;
+
+    border-radius:
+        13px;
+
+    font-size:
+        14px;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+
+    margin-top:
+        15px;
+
+    box-shadow:
+        0 8px 18px
+        rgba(122,18,12,.30);
+
+    transition:
+        .2s;
+}
+
+.checkout-btn:hover:not(:disabled) {
+
+    background:
+        linear-gradient(
+            90deg,
+            #F47B20,
+            #FFC107
+        );
+
+    color:
+        #7A120C;
+
+    transform:
+        translateY(-2px);
+}
+
+.checkout-btn:disabled {
+
+    background:
+        #BDBDBD;
+
+    border-color:
+        #9E9E9E;
+
+    color:
+        #EEEEEE;
+
+    cursor:
+        not-allowed;
+
+    box-shadow:
+        none;
+
+    transform:
+        none;
+}
+
+
+/* =========================================================
+   MINI CONFIRMATION POPUP
+========================================================= */
+
+.confirm-popup {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        rgba(53,21,13,.45);
+
+    backdrop-filter:
+        blur(4px);
+
+    z-index:
+        5000;
+
+    opacity:
+        0;
+
+    visibility:
+        hidden;
+
+    transition:
+        .25s ease;
+}
+
+.confirm-popup.show {
+
+    opacity:
+        1;
+
+    visibility:
+        visible;
+}
+
+.popup-box {
+
+    width:
+        min(380px, 90%);
+
+    background:
+        #FFF8ED;
+
+    border:
+        3px solid #F47B20;
+
+    border-radius:
+        22px;
+
+    padding:
+        30px 25px;
+
+    text-align:
+        center;
+
+    box-shadow:
+        0 20px 50px
+        rgba(60,20,5,.30);
+
+    transform:
+        scale(.8);
+
+    transition:
+        .25s ease;
+}
+
+.confirm-popup.show .popup-box {
+
+    transform:
+        scale(1);
+}
+
+.popup-icon {
+
+    width:
+        65px;
+
+    height:
+        65px;
+
+    margin:
+        0 auto 15px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7A120C,
+            #F47B20
+        );
+
+    color:
+        #FFC107;
+
+    font-size:
+        28px;
+}
+
+.popup-box h2 {
+
+    color:
+        #7A120C;
+
+    font-size:
+        21px;
+
+    margin-bottom:
+        8px;
+}
+
+.popup-box p {
+
+    color:
+        #80675A;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.5;
+
+    margin-bottom:
+        20px;
+}
+
+.popup-close {
+
+    border:
+        none;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7A120C,
+            #F47B20
+        );
+
+    color:
+        white;
+
+    padding:
+        10px 25px;
+
+    border-radius:
+        10px;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+}
+
+.popup-close:hover {
+
+    background:
+        linear-gradient(
+            90deg,
+            #F47B20,
+            #FFC107
+        );
+
+    color:
+        #7A120C;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px) {
+
+    .shop-layout {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .order-panel {
+
+        position:
+            relative;
+
+        top:
+            auto;
+
+        height:
+            650px;
+
+        max-height:
+            650px;
+    }
+
+    .food-grid {
+
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+}
+
+
+@media(max-width:800px) {
+
+    .container {
+
+        width:
+            220px;
+    }
+
+    .main-content {
+
+        margin-left:
+            220px;
+
+        padding:
+            20px;
+    }
+
+    .top-bar {
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+        gap:
+            15px;
+    }
+
+    .search-box {
+
+        width:
+            100%;
+    }
+
+    .food-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .logoName img {
+
+        width:
+            175px;
+    }
+}
+
+
+@media(max-width:600px) {
+
+    .container {
+
+        width:
+            200px;
+    }
+
+    .main-content {
+
+        margin-left:
+            200px;
+
+        padding:
+            15px;
+    }
+
+    .welcome h1 {
+
+        font-size:
+            22px;
+    }
+
+    .promo {
+
+        height:
+            170px;
+
+        padding:
+            25px;
+    }
+
+    .promo h2 {
+
+        font-size:
+            22px;
+
+        max-width:
+            180px;
+    }
+
+    .promo img {
+
+        width:
+            150px;
+
+        height:
+            120px;
+    }
+
+    .food-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .logoName img {
+
+        width:
+            150px;
+    }
+
+    .order-panel {
+
+        height:
+            600px;
+
+        max-height:
+            600px;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<div class="container">
+
+    <div class="logoName">
+
+        <img
+            src="images/logoNiDoc.png"
+            alt="Docs To Go Logo">
+
+    </div>
+
+
+    <input
+        type="checkbox"
+        id="menu-toggle">
+
+
+    <label
+        for="menu-toggle"
+        class="hamburger-btn"
+        aria-label="Toggle menu">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </label>
+
+
+    <div class="menu-content">
+
+        <ul class="menu-list">
+
+            <li onclick="menuAction('best')">
+
+                <i class="fas fa-crown"></i>
+
+                <span>
+                    Best Selling
+                </span>
+
+                <span class="menu-icon">
+                    🔥
+                </span>
+
+            </li>
+
+
+            <li onclick="menuAction('new')">
+
+                <i class="fas fa-box-open"></i>
+
+                <span>
+                    New Package
+                </span>
+
+                <span class="menu-icon">
+                    ✨
+                </span>
+
+            </li>
+
+
+            <li onclick="menuAction('cheap')">
+
+                <i class="fas fa-tag"></i>
+
+                <span>
+                    Start with 99
+                </span>
+
+                <span class="menu-icon">
+                    ₱99
+                </span>
+
+            </li>
+
+
+            <li onclick="menuAction('favorite')">
+
+                <i class="fas fa-heart"></i>
+
+                <span>
+                    Customers Favorite
+                </span>
+
+                <span class="menu-icon">
+                    ⭐
+                </span>
+
+            </li>
+
+
+            <li onclick="menuAction('healthy')">
+
+                <i class="fas fa-leaf"></i>
+
+                <span>
+                    Low Calories
+                </span>
+
+                <span class="menu-icon">
+                    🍃
+                </span>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main-content">
+
+
+    <div class="top-bar">
+
+        <div class="welcome">
+
+            <h1>
+                What would you like to eat? 🍗
+            </h1>
+
+            <p>
+                Hot • Juicy • Ready To Go!
+            </p>
+
+        </div>
+
+
+        <div class="search-box">
+
+            <i class="fas fa-search"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search your favorite food...">
+
+        </div>
+
+    </div>
+
+
+    <div class="shop-layout">
+
+
+        <!-- =================================================
+             FOOD
+        ================================================== -->
+
+        <div>
+
+
+            <div class="promo">
+
+                <div class="promo-circle"></div>
+
+                <h2>
+                    30% OFF<br>
+                    Fitness Meal
+                </h2>
+
+                <p>
+                    Hot meals made fresh for you!
+                </p>
+
+                <img
+                    src="images/pictureKo.png"
+                    alt="Promotion food">
+
+            </div>
+
+
+            <!-- CATEGORIES -->
+
+            <div class="categories">
+
+                <button
+                    class="category active"
+                    onclick="showAllFoods(this)">
+
+                    🔥 Best Seller
+
+                </button>
+
+
+                <button
+                    class="category"
+                    onclick="scrollToSection('burgers', this)">
+
+                    🍔 Burgers
+
+                </button>
+
+
+                <button
+                    class="category"
+                    onclick="scrollToSection('chicken', this)">
+
+                    🍗 Chicken
+
+                </button>
+
+
+                <button
+                    class="category"
+                    onclick="scrollToSection('meals', this)">
+
+                    🍱 Meals
+
+                </button>
+
+
+                <button
+                    class="category"
+                    onclick="scrollToSection('drinks', this)">
+
+                    🥤 Drinks
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 BEST SELLING
+            ================================================== -->
+
+            <section
+                id="best"
+                class="food-section">
+
+                <div class="section-title">
+
+                    <h2>
+                        Best Selling 🔥
+                    </h2>
+
+                </div>
+
+
+                <div class="food-grid">
+
+
+                    <div
+                        class="food-card"
+                        data-name="Roasted Chicken"
+                        data-price="149"
+                        data-category="best favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/roastedChicken.png"
+                            alt="Roasted Chicken">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Roasted Chicken
+                            </h3>
+
+                            <p>
+                                Hot and juicy roasted chicken
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱149
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Chicken Burger"
+                        data-price="99"
+                        data-category="best cheap favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/chickenBurger.png"
+                            alt="Chicken Burger">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Chicken Burger
+                            </h3>
+
+                            <p>
+                                Crispy chicken burger
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱99
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Chicken Meal"
+                        data-price="179"
+                        data-category="best healthy favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/chickenMeal.png"
+                            alt="Chicken Meal">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Chicken Meal
+                            </h3>
+
+                            <p>
+                                Chicken with rice and sides
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱179
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 BURGERS
+            ================================================== -->
+
+            <section
+                id="burgers"
+                class="food-section">
+
+                <div class="section-title">
+
+                    <h2>
+                        Burgers 🍔
+                    </h2>
+
+                </div>
+
+                <div class="food-grid">
+
+
+                    <div
+                        class="food-card"
+                        data-name="Classic Burger"
+                        data-price="89"
+                        data-category="cheap favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/classicBurger.png"
+                            alt="Classic Burger">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Classic Burger
+                            </h3>
+
+                            <p>
+                                Beef patty and vegetables
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱89
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Cheese Burger"
+                        data-price="109"
+                        data-category="favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/cheeseBurger.png"
+                            alt="Cheese Burger">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Cheese Burger
+                            </h3>
+
+                            <p>
+                                Beef, cheese and special sauce
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱109
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Double Burger"
+                        data-price="139"
+                        data-category="favorite best">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/doubleBeef.png"
+                            alt="Double Burger">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Double Beef Burger
+                            </h3>
+
+                            <p>
+                                Double beef patty with cheese
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱139
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CHICKEN
+            ================================================== -->
+
+            <section
+                id="chicken"
+                class="food-section">
+
+                <div class="section-title">
+
+                    <h2>
+                        Chicken 🍗
+                    </h2>
+
+                </div>
+
+                <div class="food-grid">
+
+
+                    <div
+                        class="food-card"
+                        data-name="Fried Chicken"
+                        data-price="129"
+                        data-category="favorite best">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/friedChicken.png"
+                            alt="Fried Chicken">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Fried Chicken
+                            </h3>
+
+                            <p>
+                                Crispy golden chicken
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱129
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Spicy Chicken"
+                        data-price="139"
+                        data-category="best favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/spicyChicken.png"
+                            alt="Spicy Chicken">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Spicy Chicken
+                            </h3>
+
+                            <p>
+                                Crispy and spicy chicken
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱139
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Chicken Wings"
+                        data-price="159"
+                        data-category="favorite best">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/chickenWing.png"
+                            alt="Chicken Wings">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Chicken Wings
+                            </h3>
+
+                            <p>
+                                Six pieces with special sauce
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱159
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MEALS
+            ================================================== -->
+
+            <section
+                id="meals"
+                class="food-section">
+
+                <div class="section-title">
+
+                    <h2>
+                        Complete Meals 🍱
+                    </h2>
+
+                </div>
+
+                <div class="food-grid">
+
+
+                    <div
+                        class="food-card"
+                        data-name="Chicken Rice Meal"
+                        data-price="169"
+                        data-category="healthy favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/chickenRiceMeal.png"
+                            alt="Chicken Rice Meal">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Chicken Rice Meal
+                            </h3>
+
+                            <p>
+                                Chicken, rice and vegetables
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱169
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Family Meal"
+                        data-price="399"
+                        data-category="new favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/familyMeal.png"
+                            alt="Family Meal">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Family Meal
+                            </h3>
+
+                            <p>
+                                Perfect for sharing
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱399
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Premium Meal"
+                        data-price="249"
+                        data-category="new favorite best">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/premiumMeal.png"
+                            alt="Premium Meal">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Premium Meal
+                            </h3>
+
+                            <p>
+                                Chicken, fries and drink
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱249
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 DRINKS
+            ================================================== -->
+
+            <section
+                id="drinks"
+                class="food-section">
+
+                <div class="section-title">
+
+                    <h2>
+                        Drinks 🥤
+                    </h2>
+
+                </div>
+
+                <div class="food-grid">
+
+
+                    <div
+                        class="food-card"
+                        data-name="Iced Tea"
+                        data-price="49"
+                        data-category="healthy">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/icedTea.png"
+                            alt="Iced Tea">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Iced Tea
+                            </h3>
+
+                            <p>
+                                Refreshing iced tea
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱49
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Soft Drink"
+                        data-price="45"
+                        data-category="cheap">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/softdrinks.png"
+                            alt="Soft Drink">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Soft Drink
+                            </h3>
+
+                            <p>
+                                Cold and refreshing
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱45
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="food-card"
+                        data-name="Fruit Juice"
+                        data-price="59"
+                        data-category="healthy favorite">
+
+                        <button
+                            class="check-food"
+                            onclick="toggleCheck(this)">
+
+                            <i class="fas fa-check"></i>
+
+                        </button>
+
+                        <img
+                            class="food-image"
+                            src="food/fruitJuice.png"
+                            alt="Fruit Juice">
+
+                        <div class="food-info">
+
+                            <h3>
+                                Fruit Juice
+                            </h3>
+
+                            <p>
+                                Fresh fruit drink
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₱59
+                                </span>
+
+                                <button
+                                    class="add-food"
+                                    onclick="addToCart(this)">
+
+                                    <i class="fas fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- =================================================
+             MY ORDERS
+        ================================================== -->
+
+        <aside class="order-panel">
+
+
+            <div class="order-header">
+
+                <h2>
+                    My Orders
+                </h2>
+
+                <span id="itemCount">
+                    0 Items
+                </span>
+
+            </div>
+
+
+            <!-- EVERYTHING BETWEEN HEADER AND SUMMARY SCROLLS -->
+
+            <div class="order-scroll">
+
+
+                <!-- ORDER ITEMS -->
+
+                <div
+                    class="order-items"
+                    id="orderItems">
+
+                    <div class="empty-order">
+
+                        <i
+                            class="fas fa-shopping-basket"
+                            style="
+                            font-size:35px;
+                            color:#F47B20;
+                            margin-bottom:12px;">
+                        </i>
+
+                        <br>
+
+                        Your order is empty.
+
+                        <br>
+
+                        Add some delicious food!
+
+                    </div>
+
+                </div>
+
+
+                <!-- CUSTOMER INFORMATION -->
+
+                <div class="customer-section">
+
+                    <h3>
+
+                        <i class="fas fa-user"></i>
+
+                        Customer Information
+
+                    </h3>
+
+
+                    <!-- NAME -->
+
+                    <div class="customer-field">
+
+                        <label for="customerName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="customerName"
+                            placeholder="Enter your full name"
+                            oninput="validateCheckout()">
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="customer-field">
+
+                        <label for="customerEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="customerEmail"
+                            placeholder="Enter your email"
+                            oninput="validateCheckout()">
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="customer-field">
+
+                        <label for="customerAddress">
+                            Delivery Address
+                        </label>
+
+                        <textarea
+                            id="customerAddress"
+                            placeholder="Enter your complete address"
+                            oninput="validateCheckout()"></textarea>
+
+                    </div>
+
+
+                    <!-- CELLPHONE -->
+
+                    <div class="customer-field">
+
+                        <label for="customerPhone">
+                            Cellphone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="customerPhone"
+                            placeholder="09XXXXXXXXX"
+                            maxlength="11"
+                            oninput="validateCheckout()">
+
+                    </div>
+
+
+                    <!-- OTP -->
+
+                    <div class="verification-box">
+
+                        <div class="verification-title">
+
+                            <i class="fas fa-shield-alt"></i>
+
+                            Phone Verification
+
+                        </div>
+
+
+                        <div class="otp-row">
+
+                            <input
+                                type="text"
+                                id="otpInput"
+                                placeholder="Enter OTP"
+                                maxlength="6"
+                                oninput="validateCheckout()">
+
+                        </div>
+
+
+                        <div
+                            class="verify-status"
+                            id="verifyStatus">
+
+                            Enter your cellphone number and OTP.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <div class="order-summary">
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong id="subtotal">
+                        ₱0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Delivery
+                    </span>
+
+                    <strong id="delivery">
+                        ₱0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Discount
+                    </span>
+
+                    <strong id="discount">
+                        -₱0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="total">
+                        ₱0
+                    </strong>
+
+                </div>
+
+
+                <button
+                    class="checkout-btn"
+                    id="checkoutBtn"
+                    onclick="checkout()"
+                    disabled>
+
+                    <i class="fas fa-check-circle"></i>
+
+                    &nbsp;
+
+                    Confirm Order
+
+                </button>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     MINI POPUP
+========================================================= -->
+
+<div
+    class="confirm-popup"
+    id="confirmPopup">
+
+    <div class="popup-box">
+
+        <div class="popup-icon">
+
+            <i class="fas fa-check"></i>
+
+        </div>
+
+        <h2>
+            Order Confirmed! 🍗
+        </h2>
+
+        <p>
+            Thank you for ordering, we will update you.
+        </p>
+
+        <button
+            class="popup-close"
+            onclick="closeConfirmPopup()">
+
+            Okay
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CART
+========================================================= */
+
+let cart = [];
+
+
+/* =========================================================
+   HAMBURGER MENU
+========================================================= */
+
+function menuAction(action) {
+
+    document.getElementById(
+        "menu-toggle"
+    ).checked = false;
+
+
+    const oldMessage =
+        document.getElementById(
+            "menu-message"
+        );
+
+
+    if (oldMessage) {
+
+        oldMessage.remove();
+
+    }
+
+
+    document
+        .querySelectorAll(".category")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+
+    switch(action) {
+
+        case "best":
+
+            filterByCategory("best");
+
+            showMenuMessage(
+                "🔥 Best Selling",
+                "Here are our most popular foods from every category!"
+            );
+
+            break;
+
+
+        case "new":
+
+            filterByCategory("new");
+
+            showMenuMessage(
+                "✨ New Package",
+                "Check out our newest meal packages!"
+            );
+
+            break;
+
+
+        case "cheap":
+
+            filterFoodByPrice(99);
+
+            showMenuMessage(
+                "🏷️ Start with ₱99",
+                "Showing foods priced at ₱99 or less."
+            );
+
+            break;
+
+
+        case "favorite":
+
+            filterByCategory("favorite");
+
+            showMenuMessage(
+                "⭐ Customers Favorite",
+                "These are some of our customers' favorite choices!"
+            );
+
+            break;
+
+
+        case "healthy":
+
+            filterByCategory("healthy");
+
+            showMenuMessage(
+                "🍃 Low Calories",
+                "Here are some lighter choices for you!"
+            );
+
+            break;
+
+    }
+
+}
+
+
+/* =========================================================
+   FILTER CATEGORY
+========================================================= */
+
+function filterByCategory(category) {
+
+    const cards =
+        document.querySelectorAll(".food-card");
+
+    let found = false;
+
+
+    cards.forEach(card => {
+
+        const categories =
+            card.dataset.category
+                .toLowerCase()
+                .split(/\s+/);
+
+
+        if (
+            categories.includes(
+                category.toLowerCase()
+            )
+        ) {
+
+            card.style.display = "";
+
+            found = true;
+
+        }
+
+        else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+
+    document
+        .querySelectorAll(".food-section")
+        .forEach(section => {
+
+            const visibleCards =
+                Array.from(
+                    section.querySelectorAll(".food-card")
+                )
+                .filter(card =>
+                    card.style.display !== "none"
+                );
+
+
+            section.style.display =
+                visibleCards.length > 0
+                ? ""
+                : "none";
+
+        });
+
+
+    if (found) {
+
+        const firstVisible =
+            document.querySelector(
+                ".food-card:not([style*='display: none'])"
+            );
+
+
+        if (firstVisible) {
+
+            setTimeout(() => {
+
+                firstVisible.scrollIntoView({
+
+                    behavior:
+                        "smooth",
+
+                    block:
+                        "center"
+
+                });
+
+            }, 100);
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   FILTER PRICE
+========================================================= */
+
+function filterFoodByPrice(maxPrice) {
+
+    const cards =
+        document.querySelectorAll(".food-card");
+
+    let found = false;
+
+
+    cards.forEach(card => {
+
+        const price =
+            Number(card.dataset.price);
+
+
+        if (price <= maxPrice) {
+
+            card.style.display = "";
+
+            found = true;
+
+        }
+
+        else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+
+    document
+        .querySelectorAll(".food-section")
+        .forEach(section => {
+
+            const visibleCards =
+                Array.from(
+                    section.querySelectorAll(".food-card")
+                )
+                .filter(card =>
+                    card.style.display !== "none"
+                );
+
+
+            section.style.display =
+                visibleCards.length > 0
+                ? ""
+                : "none";
+
+        });
+
+}
+
+
+/* =========================================================
+   MENU MESSAGE
+========================================================= */
+
+function showMenuMessage(title, text) {
+
+    const existing =
+        document.getElementById(
+            "menu-message"
+        );
+
+
+    if (existing) {
+
+        existing.remove();
+
+    }
+
+
+    const message =
+        document.createElement("div");
+
+
+    message.id =
+        "menu-message";
+
+
+    message.innerHTML = `
+
+        <div class="menu-message-content">
+
+            <div>
+
+                <strong>
+                    ${title}
+                </strong>
+
+                <p>
+                    ${text}
+                </p>
+
+            </div>
+
+            <button
+                onclick="closeMenuMessage()">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    document
+        .querySelector(".main-content")
+        .prepend(message);
+
+
+    setTimeout(() => {
+
+        message.classList.add("show");
+
+    }, 20);
+
+}
+
+
+/* =========================================================
+   CLOSE MENU MESSAGE
+========================================================= */
+
+function closeMenuMessage() {
+
+    const message =
+        document.getElementById(
+            "menu-message"
+        );
+
+
+    if (message) {
+
+        message.remove();
+
+    }
+
+}
+
+
+/* =========================================================
+   CHECK FOOD
+========================================================= */
+
+function toggleCheck(button) {
+
+    const card =
+        button.closest(
+            ".food-card"
+        );
+
+
+    const name =
+        card.dataset.name;
+
+
+    if (
+        button.classList.contains(
+            "checked"
+        )
+    ) {
+
+        button.classList.remove(
+            "checked"
+        );
+
+
+        cart =
+            cart.filter(
+                item =>
+                    item.name !== name
+            );
+
+
+        updateCart();
+
+        return;
+
+    }
+
+
+    button.classList.add(
+        "checked"
+    );
+
+
+    addToCart(button);
+
+}
+
+
+/* =========================================================
+   ADD TO CART
+========================================================= */
+
+function addToCart(button) {
+
+    const card =
+        button.closest(
+            ".food-card"
+        );
+
+
+    const name =
+        card.dataset.name;
+
+
+    const price =
+        Number(
+            card.dataset.price
+        );
+
+
+    const image =
+        card.querySelector(
+            ".food-image"
+        ).src;
+
+
+    const existing =
+        cart.find(
+            item =>
+                item.name === name
+        );
+
+
+    if (existing) {
+
+        existing.quantity++;
+
+    }
+
+    else {
+
+        cart.push({
+
+            name:
+                name,
+
+            price:
+                price,
+
+            image:
+                image,
+
+            quantity:
+                1
+
+        });
+
+    }
+
+
+    const check =
+        card.querySelector(
+            ".check-food"
+        );
+
+
+    check.classList.add(
+        "checked"
+    );
+
+
+    updateCart();
+
+}
+
+
+/* =========================================================
+   UPDATE CART
+========================================================= */
+
+function updateCart() {
+
+    const orderItems =
+        document.getElementById(
+            "orderItems"
+        );
+
+
+    orderItems.innerHTML = "";
+
+
+    if (
+        cart.length === 0
+    ) {
+
+        orderItems.innerHTML = `
+
+            <div class="empty-order">
+
+                <i
+                    class="fas fa-shopping-basket"
+                    style="
+                    font-size:35px;
+                    color:#F47B20;
+                    margin-bottom:12px;">
+                </i>
+
+                <br>
+
+                Your order is empty.
+
+                <br>
+
+                Add some delicious food!
+
+            </div>
+
+        `;
+
+    }
+
+
+    let subtotal = 0;
+
+    let itemCount = 0;
+
+
+    cart.forEach(
+        (item, index) => {
+
+
+        subtotal +=
+            item.price *
+            item.quantity;
+
+
+        itemCount +=
+            item.quantity;
+
+
+        orderItems.innerHTML += `
+
+            <div class="order-item">
+
+                <img
+                    src="${item.image}"
+                    alt="${item.name}">
+
+                <div class="order-details">
+
+                    <h4>
+                        ${item.name}
+                    </h4>
+
+                    <span>
+                        ₱${item.price}
+                    </span>
+
+                </div>
+
+                <div class="quantity">
+
+                    <button
+                        onclick="changeQuantity(${index}, -1)">
+
+                        −
+
+                    </button>
+
+                    <strong>
+                        ${item.quantity}
+                    </strong>
+
+                    <button
+                        onclick="changeQuantity(${index}, 1)">
+
+                        +
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    const delivery =
+        cart.length > 0
+        ? 30
+        : 0;
+
+
+    const discount =
+        subtotal >= 500
+        ? subtotal * .10
+        : 0;
+
+
+    const total =
+        subtotal +
+        delivery -
+        discount;
+
+
+    document
+        .getElementById("subtotal")
+        .textContent =
+        "₱" +
+        subtotal.toFixed(0);
+
+
+    document
+        .getElementById("delivery")
+        .textContent =
+        "₱" +
+        delivery;
+
+
+    document
+        .getElementById("discount")
+        .textContent =
+        "-₱" +
+        discount.toFixed(0);
+
+
+    document
+        .getElementById("total")
+        .textContent =
+        "₱" +
+        total.toFixed(0);
+
+
+    document
+        .getElementById("itemCount")
+        .textContent =
+        itemCount +
+        (
+            itemCount === 1
+            ? " Item"
+            : " Items"
+        );
+
+
+    validateCheckout();
+
+}
+
+
+/* =========================================================
+   CHANGE QUANTITY
+========================================================= */
+
+function changeQuantity(index, amount) {
+
+    cart[index].quantity +=
+        amount;
+
+
+    if (
+        cart[index].quantity <= 0
+    ) {
+
+        const name =
+            cart[index].name;
+
+
+        document
+            .querySelectorAll(".food-card")
+            .forEach(card => {
+
+                if (
+                    card.dataset.name ===
+                    name
+                ) {
+
+                    card
+                        .querySelector(
+                            ".check-food"
+                        )
+                        .classList
+                        .remove(
+                            "checked"
+                        );
+
+                }
+
+            });
+
+
+        cart.splice(
+            index,
+            1
+        );
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* =========================================================
+   VALIDATE CUSTOMER INFORMATION
+========================================================= */
+
+function validateCheckout() {
+
+    const name =
+        document
+            .getElementById(
+                "customerName"
+            )
+            .value
+            .trim();
+
+
+    const email =
+        document
+            .getElementById(
+                "customerEmail"
+            )
+            .value
+            .trim();
+
+
+    const address =
+        document
+            .getElementById(
+                "customerAddress"
+            )
+            .value
+            .trim();
+
+
+    const phone =
+        document
+            .getElementById(
+                "customerPhone"
+            )
+            .value
+            .trim();
+
+
+    const otp =
+        document
+            .getElementById(
+                "otpInput"
+            )
+            .value
+            .trim();
+
+
+    const button =
+        document.getElementById(
+            "checkoutBtn"
+        );
+
+
+    const status =
+        document.getElementById(
+            "verifyStatus"
+        );
+
+
+    /*
+     * ANY OTP IS ACCEPTED.
+     *
+     * The OTP only needs to contain
+     * something.
+     */
+
+    const otpValid =
+        otp.length > 0;
+
+
+    const phoneValid =
+        phone.length > 0;
+
+
+    const customerValid =
+        name.length > 0 &&
+        email.length > 0 &&
+        address.length > 0;
+
+
+    const canCheckout =
+        cart.length > 0 &&
+        customerValid &&
+        phoneValid &&
+        otpValid;
+
+
+    button.disabled =
+        !canCheckout;
+
+
+    /*
+     * Verification message
+     */
+
+    if (
+        phoneValid &&
+        otpValid
+    ) {
+
+        status.textContent =
+            "✓ Phone number verified.";
+
+        status.classList.add(
+            "valid"
+        );
+
+    }
+
+    else if (
+        phoneValid
+    ) {
+
+        status.textContent =
+            "Enter the OTP to continue.";
+
+        status.classList.remove(
+            "valid"
+        );
+
+    }
+
+    else {
+
+        status.textContent =
+            "Enter your cellphone number and OTP.";
+
+        status.classList.remove(
+            "valid"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CHECKOUT / CONFIRM ORDER
+========================================================= */
+
+function checkout() {
+
+    /*
+     * Double-check validation
+     */
+
+    if (
+        cart.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const name =
+        document
+            .getElementById(
+                "customerName"
+            )
+            .value
+            .trim();
+
+
+    const email =
+        document
+            .getElementById(
+                "customerEmail"
+            )
+            .value
+            .trim();
+
+
+    const address =
+        document
+            .getElementById(
+                "customerAddress"
+            )
+            .value
+            .trim();
+
+
+    const phone =
+        document
+            .getElementById(
+                "customerPhone"
+            )
+            .value
+            .trim();
+
+
+    const otp =
+        document
+            .getElementById(
+                "otpInput"
+            )
+            .value
+            .trim();
+
+
+    if (
+        name === "" ||
+        email === "" ||
+        address === "" ||
+        phone === "" ||
+        otp === ""
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * SHOW MINI POPUP
+     */
+
+    document
+        .getElementById(
+            "confirmPopup"
+        )
+        .classList
+        .add("show");
+
+
+    /*
+     * Clear order
+     */
+
+    cart = [];
+
+
+    /*
+     * Remove check marks
+     */
+
+    document
+        .querySelectorAll(
+            ".check-food"
+        )
+        .forEach(button => {
+
+            button.classList.remove(
+                "checked"
+            );
+
+        });
+
+
+    updateCart();
+
+}
+
+
+/* =========================================================
+   CLOSE CONFIRMATION POPUP
+========================================================= */
+
+function closeConfirmPopup() {
+
+    document
+        .getElementById(
+            "confirmPopup"
+        )
+        .classList
+        .remove("show");
+
+
+    /*
+     * Clear customer information
+     */
+
+    document
+        .getElementById(
+            "customerName"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "customerEmail"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "customerAddress"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "customerPhone"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "otpInput"
+        )
+        .value = "";
+
+
+    validateCheckout();
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+    .getElementById(
+        "searchInput"
+    )
+    .addEventListener(
+        "input",
+        function() {
+
+
+        const search =
+            this.value
+            .toLowerCase()
+            .trim();
+
+
+        if (search === "") {
+
+            showAllFoods();
+
+            return;
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".food-card"
+            )
+            .forEach(card => {
+
+
+                const name =
+                    card.dataset.name
+                    .toLowerCase();
+
+
+                if (
+                    name.includes(search)
+                ) {
+
+                    card.style.display =
+                        "";
+
+                }
+
+                else {
+
+                    card.style.display =
+                        "none";
+
+                }
+
+            });
+
+
+        document
+            .querySelectorAll(
+                ".food-section"
+            )
+            .forEach(section => {
+
+                const visibleCards =
+                    Array.from(
+                        section.querySelectorAll(
+                            ".food-card"
+                        )
+                    )
+                    .filter(card =>
+                        card.style.display !== "none"
+                    );
+
+
+                section.style.display =
+                    visibleCards.length > 0
+                    ? ""
+                    : "none";
+
+            });
+
+    });
+
+
+/* =========================================================
+   SHOW ALL FOODS
+========================================================= */
+
+function showAllFoods(button) {
+
+    document
+        .querySelectorAll(
+            ".food-card"
+        )
+        .forEach(card => {
+
+            card.style.display =
+                "";
+
+        });
+
+
+    document
+        .querySelectorAll(
+            ".food-section"
+        )
+        .forEach(section => {
+
+            section.style.display =
+                "";
+
+        });
+
+
+    document
+        .querySelectorAll(
+            ".category"
+        )
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    const best =
+        document.getElementById(
+            "best"
+        );
+
+
+    if (best) {
+
+        best.scrollIntoView({
+
+            behavior:
+                "smooth",
+
+            block:
+                "start"
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   CATEGORY SCROLL
+========================================================= */
+
+function scrollToSection(id, button) {
+
+    document
+        .querySelectorAll(
+            ".food-card"
+        )
+        .forEach(card => {
+
+            card.style.display =
+                "";
+
+        });
+
+
+    document
+        .querySelectorAll(
+            ".food-section"
+        )
+        .forEach(section => {
+
+            section.style.display =
+                "";
+
+        });
+
+
+    document
+        .querySelectorAll(
+            ".category"
+        )
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    const section =
+        document.getElementById(
+            id
+        );
+
+
+    if (section) {
+
+        section.scrollIntoView({
+
+            behavior:
+                "smooth",
+
+            block:
+                "start"
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   CATEGORY ACTIVE STATE
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".category"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+
+                document
+                    .querySelectorAll(
+                        ".category"
+                    )
+                    .forEach(btn => {
+
+                        btn.classList
+                            .remove(
+                                "active"
+                            );
+
+                    });
+
+
+                this.classList.add(
+                    "active"
+                );
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   INITIAL VALIDATION
+========================================================= */
+
+validateCheckout();
+
+</script>
+
+</body>
+
+</html>
